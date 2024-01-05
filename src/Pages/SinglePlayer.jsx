@@ -40,7 +40,7 @@ function SinglePlayer() {
     setTimeout(() => {
       const rps = ["paper", "rock", "scissor"];
       setOptionComputer(rps[Math.floor(Math.random() * 3)]);
-    }, 2000);
+    }, 1000);
   };
   return (
     <>
