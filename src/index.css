@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@font-face {
+  font-family: "BarlowRegular";
+  src: url("./font/BarlowSemiCondensed-Regular.ttf");
+}
+
+@font-face {
+  font-family: "BarlowMedium";
+  src: url("./font/BarlowSemiCondensed-Medium.ttf");
+}
+
+@font-face {
+  font-family: "BarlowBlod";
+  src: url("./font/BarlowSemiCondensed-Bold.ttf");
+}
