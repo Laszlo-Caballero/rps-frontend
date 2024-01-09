@@ -1,26 +1,46 @@
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { io } from "socket.io-client";
 import Logo from "./../images/logo.svg?react";
 import Rock from "./../images/icon-rock.svg?react";
 import Paper from "./../images/icon-paper.svg?react";
 import Scissors from "./../images/icon-scissors.svg?react";
 import Option from "../components/Option";
-import { useState, useEffect } from "react";
 import ModalRules from "../components/modal";
 import renderIcon from "../func/renderIcon";
 import PlayGame from "../func/PlayGame";
 import resultText from "../func/resultText";
 import { Link } from "react-router-dom";
-function SinglePlayer() {
+function GameRoom() {
+  let { room } = useParams();
+  const socket = io("http://192.168.1.46:4000");
+  socket.emit("Create room", room);
   const [modal, setModal] = useState(false);
   const [score, setScore] = useState(0);
   const [selected, setSelected] = useState(false);
-  const [option, setOption] = useState("");
-  const [optionComputer, setOptionComputer] = useState("");
+  const [optionUser, setOptionUser] = useState("");
+  const [opponentComputer, setOpponentComputer] = useState("");
   const [result, setResult] = useState(null);
+  const [playAgain, setPlayAgain] = useState(0);
+  const [buttomDisable, setButtomDisable] = useState(false);
+  useEffect(() => {
+    window.addEventListener("beforeunload", () => {
+      socket.emit("leave room", room);
+    });
+    socket.on("Option Game", (option) => {
+      setOpponentComputer(option);
+    });
+    socket.on("Response Play", (number) => {
+      setPlayAgain((playAgain) => playAgain + 1);
+    });
+    return () => {
+      socket.emit("leave room", room);
+    };
+  }, [socket, room]);
 
   useEffect(() => {
-    // Comparar opciones después de que optionComputer se establece
-    if (optionComputer) {
-      const resultGame = PlayGame(option, optionComputer);
+    if (opponentComputer != "" && optionUser != "") {
+      const resultGame = PlayGame(optionUser, opponentComputer);
       setResult(resultGame);
       switch (resultGame) {
         case 0:
@@ -33,15 +53,15 @@ function SinglePlayer() {
           break;
       }
     }
-  }, [optionComputer, option]);
-
-  const handleOption = (selectOption) => {
-    setOption(selectOption);
-    setTimeout(() => {
-      const rps = ["paper", "rock", "scissor"];
-      setOptionComputer(rps[Math.floor(Math.random() * 3)]);
-    }, 1000);
-  };
+  }, [opponentComputer, optionUser]);
+  useEffect(() => {
+    if (playAgain == 2) {
+      setSelected(false);
+      setButtomDisable(false);
+      setOptionUser("");
+      setOpponentComputer("");
+    }
+  }, [playAgain]);
   return (
     <>
       {" "}
@@ -64,16 +84,20 @@ function SinglePlayer() {
                   colorClass="from-PaperGradientT to-PaperGradientB"
                   element={<Paper />}
                   onClick={() => {
-                    handleOption("paper");
+                    setOptionUser("paper");
+                    socket.emit("Emit option", room, "paper");
                     setSelected(true);
+                    setPlayAgain(0);
                   }}
                 />
                 <Option
                   colorClass="from-ScissorGradientT to-ScissorGradientB"
                   element={<Scissors />}
                   onClick={() => {
-                    handleOption("scissor");
+                    setOptionUser("scissor");
+                    socket.emit("Emit option", room, "scissor");
                     setSelected(true);
+                    setPlayAgain(0);
                   }}
                 />
               </div>
@@ -82,8 +106,10 @@ function SinglePlayer() {
                   colorClass="from-RockGradientT to-RockGradientB"
                   element={<Rock />}
                   onClick={() => {
-                    handleOption("rock");
+                    setOptionUser("rock");
+                    socket.emit("Emit option", room, "rock");
                     setSelected(true);
+                    setPlayAgain(0);
                   }}
                 />
               </div>
@@ -93,7 +119,7 @@ function SinglePlayer() {
             <div className="w-full h-full flex">
               <div className="w-1/3 h-full flex flex-col items-center justify-center gap-y-5">
                 <p>YOU PICKED</p>
-                {renderIcon(option)}
+                {renderIcon(optionUser)}
               </div>
               <div className="w-1/3 h-full flex flex-col items-center justify-center gap-y-5">
                 {result != null && (
@@ -104,10 +130,11 @@ function SinglePlayer() {
                     <button
                       className="text-red-500 bg-white px-10 py-2 rounded-lg font-BarlowBlod"
                       onClick={() => {
-                        setSelected(false);
-                        setOptionComputer("");
+                        setPlayAgain((playAgain) => playAgain + 1);
+                        socket.emit("Play again", room, 1);
                         setResult(null);
                       }}
+                      disabled={buttomDisable}
                     >
                       PLAY AGAIN
                     </button>
@@ -116,12 +143,12 @@ function SinglePlayer() {
               </div>
               <div className="w-1/3 h-full flex flex-col items-center justify-center gap-y-5">
                 <p>THE HOUSE PICKED</p>
-                {!optionComputer && (
+                {!opponentComputer && (
                   <div className="bg-black bg-opacity-20 h-[170px] w-[170px] rounded-full">
                     {" "}
                   </div>
                 )}
-                {optionComputer && renderIcon(optionComputer)}
+                {opponentComputer && renderIcon(opponentComputer)}
               </div>
             </div>
           )}
@@ -151,4 +178,4 @@ function SinglePlayer() {
   );
 }
 
-export default SinglePlayer;
+export default GameRoom;
