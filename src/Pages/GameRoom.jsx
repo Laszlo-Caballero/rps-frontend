@@ -1,21 +1,17 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { io } from "socket.io-client";
-import Logo from "./../images/logo.svg?react";
-import Rock from "./../images/icon-rock.svg?react";
-import Paper from "./../images/icon-paper.svg?react";
-import Scissors from "./../images/icon-scissors.svg?react";
-import Option from "../components/Option";
-import ModalRules from "../components/modal";
+import Header from "../components/Header";
+import GameMenu from "../components/GameMenu";
 import renderIcon from "../func/renderIcon";
 import PlayGame from "../func/PlayGame";
 import resultText from "../func/resultText";
-import { Link } from "react-router-dom";
+import Footer from "../components/Footer";
 function GameRoom() {
   let { room } = useParams();
   const socket = io("http://192.168.1.46:4000");
   socket.emit("Create room", room);
-  const [modal, setModal] = useState(false);
+
   const [score, setScore] = useState(0);
   const [selected, setSelected] = useState(false);
   const [optionUser, setOptionUser] = useState("");
@@ -66,54 +62,29 @@ function GameRoom() {
     <>
       {" "}
       <main className="bg-gradient-to-r from-BackgroundRadientP to-BackgroundRadientR h-screen flex flex-col items-center min-w-screen font-BarlowRegular text-white">
-        <header className="border-white border-2 w-3/5 rounded-xl p-5 flex justify-between mt-6">
-          <Logo />
-          <div className="h-[98px] bg-white flex flex-col items-center w-2/12 justify-center rounded-lg">
-            {" "}
-            <p className="text-TextScore">SCORE</p>
-            <p className="text-DarkText text-6xl pb-1 font-BarlowBlod">
-              {score}
-            </p>
-          </div>
-        </header>
+        <Header score={score} />
         <section className="w-[50%] h-[75%] flex flex-col items-center justify-center">
           {!selected && (
-            <>
-              <div className="flex w-auto gap-20">
-                <Option
-                  colorClass="from-PaperGradientT to-PaperGradientB"
-                  element={<Paper />}
-                  onClick={() => {
-                    setOptionUser("paper");
-                    socket.emit("Emit option", room, "paper");
-                    setSelected(true);
-                    setPlayAgain(0);
-                  }}
-                />
-                <Option
-                  colorClass="from-ScissorGradientT to-ScissorGradientB"
-                  element={<Scissors />}
-                  onClick={() => {
-                    setOptionUser("scissor");
-                    socket.emit("Emit option", room, "scissor");
-                    setSelected(true);
-                    setPlayAgain(0);
-                  }}
-                />
-              </div>
-              <div className="mt-12">
-                <Option
-                  colorClass="from-RockGradientT to-RockGradientB"
-                  element={<Rock />}
-                  onClick={() => {
-                    setOptionUser("rock");
-                    socket.emit("Emit option", room, "rock");
-                    setSelected(true);
-                    setPlayAgain(0);
-                  }}
-                />
-              </div>
-            </>
+            <GameMenu
+              paper={() => {
+                setOptionUser("paper");
+                socket.emit("Emit option", room, "paper");
+                setSelected(true);
+                setPlayAgain(0);
+              }}
+              scissors={() => {
+                setOptionUser("scissor");
+                socket.emit("Emit option", room, "scissor");
+                setSelected(true);
+                setPlayAgain(0);
+              }}
+              rock={() => {
+                setOptionUser("rock");
+                socket.emit("Emit option", room, "rock");
+                setSelected(true);
+                setPlayAgain(0);
+              }}
+            />
           )}
           {selected && (
             <div className="w-full h-full flex">
@@ -153,26 +124,7 @@ function GameRoom() {
             </div>
           )}
         </section>
-        <footer className="flex justify-between w-full px-12">
-          <Link to="/" className="px-8 py-2 border-white border-2 rounded-xl">
-            Menu
-          </Link>
-          <button
-            className="px-8 py-2 border-white border-2 rounded-xl"
-            onClick={() => {
-              setModal(true);
-            }}
-          >
-            RULES
-          </button>
-        </footer>
-        {modal && (
-          <ModalRules
-            onClick={() => {
-              setModal(false);
-            }}
-          />
-        )}
+        <Footer />
       </main>
     </>
   );

@@ -10,7 +10,7 @@ function RoomIndex() {
   useEffect(() => {
     const socket = io("http://192.168.1.46:4000");
     axios
-      .get("http://localhost:4000/rooms")
+      .get("http://192.168.1.46:4000/rooms")
       .then((response) => setRooms(response.data))
       .catch((error) => console.log(error));
     socket.on("New room", (activeRooms) => {
@@ -23,7 +23,7 @@ function RoomIndex() {
         <header className="h-auto w-1/2 mt-6">
           <Logo />
         </header>
-        <section className="w-1/2 h-[70%]">
+        <section className="lg:w-1/2 h-[70%] mobile:px-12">
           <article className="h-[80%] w-full  border-2 rounded-xl">
             <ul className="h-full flex flex-col gap-y-4 p-6">
               {rooms.map((elemet, index) => {
@@ -44,7 +44,7 @@ function RoomIndex() {
           <article className="flex gap-12 items-center w-full justify-center mt-3">
             <input
               type="text"
-              className="h-[30px] rounded-full text-black px-3"
+              className="lg:h-[30px] mobile:h-[40px] rounded-full text-black px-3"
               value={inputRoom}
               onChange={(e) => {
                 setInputRoom(e.target.value);
@@ -62,7 +62,7 @@ function RoomIndex() {
           </article>
         </section>
 
-        <footer className="w-full flex justify-end px-8">
+        <footer className="w-full flex lg:justify-end mobile:justify-center px-8">
           <Link to="/" className="border-2 px-6 py-2 rounded-xl h-[45px]">
             Menu
           </Link>

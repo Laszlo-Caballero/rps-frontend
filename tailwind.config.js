@@ -20,6 +20,9 @@ export default {
         BarlowMedium: "BarlowMedium",
         BarlowBlod: "BarlowBlod",
       },
+      screens: {
+        mobile: "375px",
+      },
     },
   },
   plugins: [],
