@@ -23,3 +23,4 @@ dist-ssr
 *.sln
 *.sw?
 server-rps
+src/Pages/GameRoom2.jsx
