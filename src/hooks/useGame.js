@@ -40,9 +40,7 @@ function useGameMultiplayer(room) {
           setScore((score) => score + 1);
           break;
         case 1:
-          setScore((score) => score - 1);
-          break;
-        default:
+          if (score > 0) setScore((score) => score - 1);
           break;
       }
     }
