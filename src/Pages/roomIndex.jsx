@@ -23,7 +23,7 @@ function RoomIndex() {
         <header className="h-auto w-1/2 mt-6">
           <Logo />
         </header>
-        <section className="lg:w-1/2 h-[70%] mobile:px-12">
+        <section className="lg:w-1/2 h-[70%] mobile:px-4">
           <article className="h-[80%] w-full  border-2 rounded-xl">
             <ul className="h-full flex flex-col gap-y-4 p-6">
               {rooms.map((elemet, index) => {
@@ -49,6 +49,7 @@ function RoomIndex() {
           </article>
           <article className="flex gap-12 items-center w-full justify-center mt-3">
             <input
+              name="room"
               type="text"
               className="lg:h-[30px] mobile:h-[40px] rounded-full text-black px-3"
               value={inputRoom}

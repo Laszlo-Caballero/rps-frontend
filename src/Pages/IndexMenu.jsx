@@ -21,7 +21,7 @@ function IndexMenu() {
         </Link>
       </section>
       <footer className="flex justify-center">
-        <div className="mobile:mt-20 lg:mt-40 flex gap-2 justify-center mobile:flex-col">
+        <div className="mobile:mt-20 lg:mt-10 flex gap-2 justify-center mobile:flex-col">
           <span>
             Challenge by
             <a
