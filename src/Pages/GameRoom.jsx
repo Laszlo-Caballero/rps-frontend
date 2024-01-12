@@ -4,7 +4,7 @@ import GameMenu from "../components/GameMenu";
 import renderIcon from "../func/renderIcon";
 import resultText from "../func/resultText";
 import Footer from "../components/Footer";
-import useGameMultiplayer from "../hooks/useGame";
+import useGameMultiplayer from "../hooks/useGameMultiplayer";
 function GameRoom() {
   let { room } = useParams();
   const {

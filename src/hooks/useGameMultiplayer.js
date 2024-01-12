@@ -26,6 +26,9 @@ function useGameMultiplayer(room) {
       console.log(cantPlayers);
       setPlayers(cantPlayers);
     });
+    newSocket.on("Set Again", () => {
+      setPlayAgain((playAgain) => playAgain + 1);
+    });
     return () => {
       newSocket.emit("leave room", room);
     };
@@ -57,21 +60,24 @@ function useGameMultiplayer(room) {
   const EmitPaper = () => {
     setOptionUser("paper");
     socket.emit("Option", room, "paper");
+    setPlayAgain(0);
     setSelected(true);
   };
   const EmitRock = () => {
     socket.emit("Option", room, "rock");
+    setPlayAgain(0);
     setOptionUser("rock");
     setSelected(true);
   };
   const EmitScissors = () => {
     socket.emit("Option", room, "scissor");
+    setPlayAgain(0);
     setOptionUser("scissor");
     setSelected(true);
   };
   const EmitPlayAgain = () => {
     setPlayAgain((playAgain) => playAgain + 1);
-    socket.emit("Play again", room);
+    socket.emit("Play Again", room);
     setResult(null);
   };
 
