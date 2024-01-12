@@ -1,70 +1,25 @@
-import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { io } from "socket.io-client";
 import Header from "../components/Header";
 import GameMenu from "../components/GameMenu";
 import renderIcon from "../func/renderIcon";
-import PlayGame from "../func/PlayGame";
 import resultText from "../func/resultText";
 import Footer from "../components/Footer";
+import useGameMultiplayer from "../hooks/useGame";
 function GameRoom() {
   let { room } = useParams();
-  const [socket, setSocket] = useState(null);
-  const [score, setScore] = useState(0);
-  const [selected, setSelected] = useState(false);
-  const [optionUser, setOptionUser] = useState("");
-  const [optionOpponet, setOptionOpponet] = useState("");
-  const [result, setResult] = useState(null);
-  const [playAgain, setPlayAgain] = useState(0);
-  const [buttomDisable, setButtomDisable] = useState(false);
-  const [players, setPlayers] = useState(0);
-  useEffect(() => {
-    const newSocket = io("http://192.168.1.46:4000");
-    setSocket(newSocket);
-
-    newSocket.emit("Create room", room);
-
-    window.addEventListener("beforeunload", () => {
-      newSocket.emit("leave room", room);
-    });
-
-    newSocket.on("Turn Opponent", (option) => {
-      console.log(option);
-      setOptionOpponet(option);
-    });
-    newSocket.on("players", (cantPlayers) => {
-      console.log(cantPlayers);
-      setPlayers(cantPlayers);
-    });
-    return () => {
-      newSocket.emit("leave room", room);
-    };
-  }, [room]);
-
-  useEffect(() => {
-    if (optionOpponet != "" && optionUser != "") {
-      const resultGame = PlayGame(optionUser, optionOpponet);
-      setResult(resultGame);
-      switch (resultGame) {
-        case 0:
-          setScore((score) => score + 1);
-          break;
-        case 1:
-          setScore((score) => score - 1);
-          break;
-        default:
-          break;
-      }
-    }
-  }, [optionOpponet, optionUser]);
-  useEffect(() => {
-    if (playAgain == 2) {
-      setSelected(false);
-      setButtomDisable(false);
-      setOptionUser("");
-      setOptionOpponet("");
-    }
-  }, [playAgain]);
+  const {
+    players,
+    selected,
+    score,
+    optionUser,
+    optionOpponet,
+    result,
+    buttomDisable,
+    EmitPaper,
+    EmitRock,
+    EmitScissors,
+    EmitPlayAgain,
+  } = useGameMultiplayer(room);
   return (
     <>
       {players <= 1 && (
@@ -77,21 +32,9 @@ function GameRoom() {
         <section className="w-[50%] h-[75%] flex flex-col items-center justify-center">
           {!selected && (
             <GameMenu
-              paper={() => {
-                setOptionUser("paper");
-                socket.emit("Option", room, "paper");
-                setSelected(true);
-              }}
-              scissors={() => {
-                socket.emit("Option", room, "scissor");
-                setOptionUser("scissor");
-                setSelected(true);
-              }}
-              rock={() => {
-                socket.emit("Option", room, "rock");
-                setOptionUser("rock");
-                setSelected(true);
-              }}
+              paper={EmitPaper}
+              scissors={EmitScissors}
+              rock={EmitRock}
             />
           )}
           {selected && (
@@ -108,11 +51,7 @@ function GameRoom() {
                     </p>
                     <button
                       className="text-red-500 bg-white px-10 py-2 rounded-lg font-BarlowBlod"
-                      onClick={() => {
-                        setPlayAgain((playAgain) => playAgain + 1);
-                        socket.emit("Play again", room);
-                        setResult(null);
-                      }}
+                      onClick={EmitPlayAgain}
                       disabled={buttomDisable}
                     >
                       PLAY AGAIN
@@ -133,12 +72,7 @@ function GameRoom() {
             </div>
           )}
         </section>
-        <Footer
-          onClick={() => {
-            setOptionUser("");
-            setOptionOpponet("");
-          }}
-        />
+        <Footer />
       </main>
     </>
   );
