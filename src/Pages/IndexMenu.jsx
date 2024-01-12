@@ -20,6 +20,30 @@ function IndexMenu() {
           MultiPlayer
         </Link>
       </section>
+      <footer className="flex justify-center">
+        <div className="mobile:mt-20 lg:mt-40 flex gap-2 justify-center mobile:flex-col">
+          <span>
+            Challenge by
+            <a
+              href="https://www.frontendmentor.io?ref=challenge"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Frontend Mentor.
+            </a>
+          </span>
+          <span>
+            Coded by{" "}
+            <a
+              href="https://github.com/Laszlo-Caballero"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Laszlo-Caballero.
+            </a>
+          </span>
+        </div>
+      </footer>
     </main>
   );
 }
