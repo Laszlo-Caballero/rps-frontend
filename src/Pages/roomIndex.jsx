@@ -29,12 +29,18 @@ function RoomIndex() {
               {rooms.map((elemet, index) => {
                 return (
                   <li key={index} className="flex justify-between">
-                    <Link
-                      to={elemet.roomName}
-                      className="font-BarlowMedium text-2xl"
-                    >
-                      {elemet.roomName}
-                    </Link>{" "}
+                    {elemet.players >= 2 ? (
+                      <p className="font-BarlowMedium text-2xl">
+                        {elemet.room}
+                      </p>
+                    ) : (
+                      <Link
+                        to={elemet.room}
+                        className="font-BarlowMedium text-2xl"
+                      >
+                        {elemet.room}
+                      </Link>
+                    )}
                     <span className="text-xl">players: {elemet.players}</span>
                   </li>
                 );

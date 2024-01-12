@@ -1,5 +1,4 @@
 import { Route, Routes } from "react-router-dom";
-
 import RoomIndex from "./roomIndex";
 import GameRoom from "./GameRoom";
 function Multiplayer() {

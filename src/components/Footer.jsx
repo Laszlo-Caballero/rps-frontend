@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import ModalRules from "./modal";
-function Footer() {
+function Footer({ onClick }) {
   const [modal, setModal] = useState(false);
   return (
     <>
@@ -9,6 +9,7 @@ function Footer() {
         <Link to="/" className="px-8 py-2 border-white border-2 rounded-xl">
           Menu
         </Link>
+        <button onClick={onClick}>ver jugadores</button>
         <button
           className="px-8 py-2 border-white border-2 rounded-xl"
           onClick={() => {
