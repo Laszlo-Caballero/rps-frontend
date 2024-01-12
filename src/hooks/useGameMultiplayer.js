@@ -23,8 +23,8 @@ function useGameMultiplayer(room) {
       setOptionOpponet(option);
     });
     newSocket.on("players", (cantPlayers) => {
-      console.log(cantPlayers);
       setPlayers(cantPlayers);
+      if (cantPlayers == 1) resetGame();
     });
     newSocket.on("Set Again", () => {
       setPlayAgain((playAgain) => playAgain + 1);
@@ -49,13 +49,15 @@ function useGameMultiplayer(room) {
     }
   }, [optionOpponet, optionUser]);
   useEffect(() => {
-    if (playAgain == 2) {
-      setSelected(false);
-      setButtomDisable(false);
-      setOptionUser("");
-      setOptionOpponet("");
-    }
+    if (playAgain == 2) resetGame;
   }, [playAgain]);
+
+  const resetGame = () => {
+    setSelected(false);
+    setButtomDisable(false);
+    setOptionUser("");
+    setOptionOpponet("");
+  };
 
   const EmitPaper = () => {
     setOptionUser("paper");
