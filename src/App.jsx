@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import IndexMenu from "./Pages/IndexMenu";
 import SinglePlayer from "./Pages/SinglePlayer";
-import Multiplayer from "./Pages/Multiplayer";
+import Multiplayer from "./Pages/Multiplayer/Multiplayer";
 
 function App() {
   return (

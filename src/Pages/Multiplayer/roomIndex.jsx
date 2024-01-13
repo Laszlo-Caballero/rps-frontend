@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
-import Logo from "./../images/logo.svg?react";
-import useRooms from "../hooks/useRooms";
+import Logo from "./../../images/logo.svg?react";
+import useRooms from "../../hooks/useRooms";
 import { useState } from "react";
 function RoomIndex() {
   const [inputRoom, setInputRoom] = useState("");
@@ -18,21 +18,14 @@ function RoomIndex() {
               {rooms.map((elemet, index) => {
                 return (
                   <li key={index} className="flex justify-between">
-                    {elemet.players >= 2 ? (
-                      <Link
-                        to={`spectator/${elemet.room}`}
-                        className="font-BarlowMedium text-2xl"
-                      >
-                        {elemet.room}
-                      </Link>
-                    ) : (
+                    {
                       <Link
                         to={elemet.room}
                         className="font-BarlowMedium text-2xl"
                       >
                         {elemet.room}
                       </Link>
-                    )}
+                    }
                     <span className="text-xl">players: {elemet.players}</span>
                   </li>
                 );

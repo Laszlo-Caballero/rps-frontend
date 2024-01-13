@@ -1,13 +1,12 @@
 import { useParams } from "react-router-dom";
-import Header from "../components/Header";
-import GameMenu from "../components/GameMenu";
+import Header from "../../components/Header";
+import GameMenu from "../../components/GameMenu";
 import { useState, useEffect } from "react";
-import Footer from "../components/Footer";
-import useGameMultiplayer from "../hooks/useGameMultiplayer";
-import { ShowOption, ShowOptionMobile } from "../components/showOptions";
+import Footer from "../../components/Footer";
+import useGameMultiplayer from "../../hooks/useGameMultiplayer";
+import { ShowOption, ShowOptionMobile } from "../../components/showOptions";
 function GameRoom() {
   let { room } = useParams();
-
   const [mobileSection, setMobileSection] = useState(true);
   const {
     players,
@@ -21,12 +20,12 @@ function GameRoom() {
     EmitScissors,
     EmitPlayAgain,
   } = useGameMultiplayer(room);
+
   useEffect(() => {
     if (window.innerWidth >= 1024) {
       setMobileSection(false);
     }
   }, []);
-
   return (
     <>
       {players <= 1 && (
