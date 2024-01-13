@@ -1,22 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
-import { io } from "socket.io-client";
-import { useState, useEffect } from "react";
-import axios from "axios";
 import Logo from "./../images/logo.svg?react";
+import useRooms from "../hooks/useRooms";
+import { useState } from "react";
 function RoomIndex() {
-  const [rooms, setRooms] = useState([]);
   const [inputRoom, setInputRoom] = useState("");
   const navigate = useNavigate();
-  useEffect(() => {
-    const socket = io("http://192.168.1.46:4000");
-    axios
-      .get("http://192.168.1.46:4000/rooms")
-      .then((response) => setRooms(response.data))
-      .catch((error) => console.log(error));
-    socket.on("New room", (activeRooms) => {
-      setRooms(activeRooms);
-    });
-  }, []);
+  let { rooms } = useRooms();
   return (
     <>
       <main className="bg-gradient-to-r from-BackgroundRadientP to-BackgroundRadientR h-screen flex flex-col items-center justify-center  min-w-screen font-BarlowRegular text-white gap-y-6">
