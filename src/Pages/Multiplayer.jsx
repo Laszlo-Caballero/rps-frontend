@@ -7,6 +7,7 @@ function Multiplayer() {
       <Routes>
         <Route path="/" element={<RoomIndex />} />
         <Route path="/:room" element={<GameRoom />} />
+        <Route path="/spectator/:room" element={<h1>room</h1>} />
       </Routes>
     </>
   );

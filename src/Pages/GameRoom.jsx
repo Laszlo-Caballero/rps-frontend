@@ -7,6 +7,7 @@ import useGameMultiplayer from "../hooks/useGameMultiplayer";
 import { ShowOption, ShowOptionMobile } from "../components/showOptions";
 function GameRoom() {
   let { room } = useParams();
+
   const [mobileSection, setMobileSection] = useState(true);
   const {
     players,

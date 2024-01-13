@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import PlayGame from "../func/PlayGame";
-
+import { useNavigate } from "react-router-dom";
 function useGameMultiplayer(room) {
   const [socket, setSocket] = useState(null);
   const [score, setScore] = useState(0);
@@ -12,6 +12,7 @@ function useGameMultiplayer(room) {
   const [playAgain, setPlayAgain] = useState(0);
   const [buttomDisable, setButtomDisable] = useState(false);
   const [players, setPlayers] = useState(0);
+  const navigate = useNavigate();
   useEffect(() => {
     const newSocket = io("http://192.168.1.46:4000");
     setSocket(newSocket);
@@ -24,12 +25,12 @@ function useGameMultiplayer(room) {
     });
     newSocket.on("players", (cantPlayers) => {
       setPlayers(cantPlayers);
-      console.log(cantPlayers);
       if (cantPlayers == 1) resetGame();
     });
     newSocket.on("Set Again", () => {
       setPlayAgain((playAgain) => playAgain + 1);
     });
+    console.log("socket id: " + newSocket.id);
     return () => {
       newSocket.emit("leave room", room);
     };
@@ -52,7 +53,12 @@ function useGameMultiplayer(room) {
   useEffect(() => {
     if (playAgain == 2) resetGame();
   }, [playAgain]);
-
+  useEffect(() => {
+    if (players >= 2) {
+      console.log("asda");
+      navigate(`spectator/${room}`);
+    }
+  }, []);
   const resetGame = () => {
     setSelected(false);
     setButtomDisable(false);

@@ -19,9 +19,12 @@ function RoomIndex() {
                 return (
                   <li key={index} className="flex justify-between">
                     {elemet.players >= 2 ? (
-                      <p className="font-BarlowMedium text-2xl">
+                      <Link
+                        to={`spectator/${elemet.room}`}
+                        className="font-BarlowMedium text-2xl"
+                      >
                         {elemet.room}
-                      </p>
+                      </Link>
                     ) : (
                       <Link
                         to={elemet.room}
