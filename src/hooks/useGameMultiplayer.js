@@ -11,7 +11,7 @@ function useGameMultiplayer(room) {
   const [playAgain, setPlayAgain] = useState(0);
   const [players, setPlayers] = useState(0);
   useEffect(() => {
-    const newSocket = io("https://server-rps.vercel.app/");
+    const newSocket = io("https://server-rps.onrender.com");
     setSocket(newSocket);
     newSocket.emit("Create room", room);
     window.addEventListener("beforeunload", () => {
