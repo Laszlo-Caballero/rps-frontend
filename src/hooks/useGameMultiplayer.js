@@ -24,6 +24,7 @@ function useGameMultiplayer(room) {
     });
     newSocket.on("players", (cantPlayers) => {
       setPlayers(cantPlayers);
+      console.log(cantPlayers);
       if (cantPlayers == 1) resetGame();
     });
     newSocket.on("Set Again", () => {
@@ -49,7 +50,7 @@ function useGameMultiplayer(room) {
     }
   }, [optionOpponet, optionUser]);
   useEffect(() => {
-    if (playAgain == 2) resetGame;
+    if (playAgain == 2) resetGame();
   }, [playAgain]);
 
   const resetGame = () => {
