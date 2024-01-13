@@ -5,13 +5,9 @@ import axios from "axios";
 function useRooms() {
   const [rooms, setRooms] = useState([]);
   useEffect(() => {
-    const socket = io(
-      "https://server-ij38c2xyx-laszlo-caballeros-projects.vercel.app"
-    );
+    const socket = io("https://server-rps.vercel.app/");
     axios
-      .get(
-        "https://server-ij38c2xyx-laszlo-caballeros-projects.vercel.app/rooms"
-      )
+      .get("https://server-rps.vercel.app/")
       .then((response) => setRooms(response.data))
       .catch((error) => console.log(error));
     socket.on("New room", (activeRooms) => {
